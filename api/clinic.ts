@@ -6,6 +6,18 @@ import { ClinicRegister } from "../models/clinic_register";
 
 export const router = express.Router();
 
+router.get('/', (req, res)=>{
+    let sql = "SELECT * FROM user"
+
+    conn.query(sql, (err, result) => {
+        if(err){
+            res.status(400).json({msg: err.message});
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
+
 router.post('/register', (req, res) => {
     let clinicData: ClinicRegister = req.body;
 
