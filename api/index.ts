@@ -15,3 +15,8 @@ router.get('/', (req, res)=>{
         }
     });
 });
+
+router.post('/register', (req, res) => {
+    let sql = "INSERT INTO user (username, nameSurname, email, password, profilePic, type) VALUES (?,?,?,?,?,?)"
+    
+})
