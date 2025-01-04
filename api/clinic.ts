@@ -42,3 +42,20 @@ router.post('/register', (req, res) => {
         }
     })
 })
+
+router.get('/search/:word', (req, res) => {
+    let word = req.params.word; 
+
+    let sql = "SELECT * FROM user WHERE type = 2 AND username LIKE CONCAT(?,'%')"
+    sql = mysql.format(sql, [
+        word
+    ])
+
+    conn.query(sql, (err, result) => {
+        if(err){
+            res.status(400).json({msg: err.message});
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
