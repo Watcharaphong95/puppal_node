@@ -2,11 +2,12 @@ import express from "express";
 import { conn } from "../dbconnect";
 import mysql from "mysql";
 import { UserRegister } from "../models/user_register";
+import { LoginData } from "../models/login_data";
 
 export const router = express.Router();
 
 router.get('/', (req, res)=>{
-    let sql = "SELECT * FROM user"
+    let sql = "SELECT * FROM user WHERE type = 1"
 
     conn.query(sql, (err, result) => {
         if(err){
@@ -39,3 +40,21 @@ router.post('/register', (req, res) => {
         }
     })
 })
+
+router.get('/login', (req, res)=>{
+    let loginData: LoginData = req.body;
+
+    let sql = "SELECT * FROM user WHERE email = ? AND password = ?"
+    sql = mysql.format(sql, [
+        loginData.email,
+        loginData.password
+    ])
+
+    conn.query(sql, (err, result) => {
+        if(err){
+            res.status(400).json({msg: err.message});
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});

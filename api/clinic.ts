@@ -7,7 +7,7 @@ import { ClinicRegister } from "../models/clinic_register";
 export const router = express.Router();
 
 router.get('/', (req, res)=>{
-    let sql = "SELECT * FROM user"
+    let sql = "SELECT * FROM user WHERE type = 2"
 
     conn.query(sql, (err, result) => {
         if(err){
