@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.get('/login', (req, res)=>{
+router.post('/login', (req, res)=>{
     let loginData: LoginData = req.body;
 
     let sql = "SELECT * FROM user WHERE email = ? AND password = ?"
