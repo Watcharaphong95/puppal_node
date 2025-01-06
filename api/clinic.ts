@@ -71,7 +71,7 @@ router.post('/register', (req, res) => {
 router.get('/search/:word', (req, res) => {
     let word = req.params.word; 
 
-    let sql = "SELECT * FROM user WHERE cid IS NOT NULL AND username LIKE CONCAT(?,'%')"
+    let sql = "SELECT * FROM user WHERE clinicname LIKE CONCAT(?,'%')"
     sql = mysql.format(sql, [
         word
     ])
