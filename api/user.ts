@@ -21,30 +21,45 @@ router.get('/', (req, res)=>{
 router.post('/register', (req, res) => {
     let userData: UserRegister = req.body;
 
-    let sql = `
-        INSERT INTO user (username, nameSurname, phone, email, password, profilePic)
-        VALUES (?, ?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-        username = CASE WHEN username IS NULL THEN VALUES(username) ELSE username END,
-        nameSurname = CASE WHEN nameSurname IS NULL THEN VALUES(nameSurname) ELSE nameSurname END,
-        phone = CASE WHEN phone IS NULL THEN VALUES(phone) ELSE phone END,
-        password = CASE WHEN password IS NULL THEN VALUES(password) ELSE password END,
-        profilePic = CASE WHEN profilePic IS NULL THEN VALUES(profilePic) ELSE profilePic END;
-    `
-    sql = mysql.format(sql, [
-        userData.username,
-        userData.nameSurname,
-        userData.phone,
-        userData.email,
-        userData.password,
-        userData.profilePic,
-    ])
+    let checkEmail = "SELECT * FROM user WHERE email = ? AND username IS NULL";
+    checkEmail = mysql.format(checkEmail, [userData.email]);
 
-    conn.query(sql, (err, result) => {
+    conn.query(checkEmail, (err, result) => {
         if(err) {
             res.status(400).json({msg: err.message});
+        } else if (result.length > 0){
+            let sql = "UPDATE user SET username = ?, profilePic = ? WHERE email = ?;"
+            sql = mysql.format(sql, [
+                userData.username,
+                userData.profilePic,
+                userData.email
+            ])
+
+            conn.query(sql, (err, result) => {
+                if(err) {
+                    res.status(400).json({msg: err.message});
+                } else {
+                    res.status(200).json({affected_rows: result.affectedRows, last_idx: result.insertId});
+                }
+            })
         } else {
-            res.status(200).json({affected_rows: result.affectedRows, last_idx: result.insertId});
+            let sql = "INSERT INTO user (username, nameSurname, phone, email, password, profilePic) VALUES (?,?,?,?,?,?) "
+            sql = mysql.format(sql, [
+                userData.username,
+                userData.nameSurname,
+                userData.phone,
+                userData.email,
+                userData.password,
+                userData.profilePic,
+            ])
+
+            conn.query(sql, (err, result) => {
+                if(err) {
+                    res.status(400).json({msg: err.message});
+                } else {
+                    res.status(200).json({affected_rows: result.affectedRows, last_idx: result.insertId});
+                }
+            })
         }
     })
 })
