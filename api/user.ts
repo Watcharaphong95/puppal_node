@@ -21,7 +21,16 @@ router.get('/', (req, res)=>{
 router.post('/register', (req, res) => {
     let userData: UserRegister = req.body;
 
-    let sql = "INSERT INTO user (username, nameSurname, phone, email, password, profilePic) VALUES (?,?,?,?,?,?)"
+    let sql = `
+        INSERT INTO user (username, nameSurname, phone, email, password, profilePic)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+            username = VALUES(username),
+            nameSurname = VALUES(nameSurname),
+            phone = VALUES(phone),
+            password = VALUES(password),
+            profilePic = VALUES(profilePic)
+    `
     sql = mysql.format(sql, [
         userData.username,
         userData.nameSurname,

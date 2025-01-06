@@ -21,18 +21,18 @@ router.get('/', (req, res)=>{
 router.post('/register', (req, res) => {
     let clinicData: ClinicRegister = req.body;
 
-    let sqlCheck = "SELECT * FROM user WHERE email = ?"
-    sqlCheck = mysql.format(sqlCheck, [
-        clinicData.email
-    ])
-
-    conn.query(sqlCheck, (err, result) => {
-        if(result){
-            
-        }
-    })
-
-    let sql = "INSERT INTO user (clinicname, nameSurname, phone, email, password, profileClinicPic, lat, lng) VALUES (?,?,?,?,?,?,?,?)"
+    let sql = `
+        INSERT INTO user (clinicname, nameSurname, phone, email, password, profileClinicPic, lat, lng) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+            clinicname = VALUES(clinicname),
+            nameSurname = VALUES(nameSurname),
+            phone = VALUES(phone),
+            password = VALUES(password),
+            profileClinicPic = VALUES(profileClinicPic),
+            lat = VALUES(lat),
+            lng = VALUES(lng)
+    `
     sql = mysql.format(sql, [
         clinicData.clinicname,
         clinicData.nameSurname,
