@@ -17,6 +17,18 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/breed", (req, res) => {
+    let sql = "SELECT * FROM breed";
+  
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ msg: err.message });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  });
+
 router.get("/:uid", (req, res) => {
     let uid = req.params.uid;
 
