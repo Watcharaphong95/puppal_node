@@ -52,19 +52,19 @@ router.post("/register", (req, res) => {
   let sql =
     "INSERT INTO dog (b_did, u_did, name, gender, color, defect, birth, conDisease, vacHistory, sterilization, pic, hair, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ";
   sql = mysql.format(sql, [
-    dogData.b_did || null,
-    dogData.u_did || null,
-    dogData.name || null,
-    dogData.gender || null,
-    dogData.color || null,
+    dogData.b_did,
+    dogData.u_did,
+    dogData.name,
+    dogData.gender,
+    dogData.color,
     dogData.defect || null,
-    dogData.birth || null,
+    dogData.birth,
     dogData.conDisease || null,
     dogData.vacHistory || null,
     dogData.sterilization || null,
-    dogData.pic || null,
+    dogData.pic,
     dogData.hair || null,
-    dogData.status || null,
+    dogData.status,
   ]);
 
   conn.query(sql, (err, result) => {
