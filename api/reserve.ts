@@ -22,6 +22,10 @@ router.get("/", (req, res) => {
 router.post("/add", (req, res) => {
   let reserveData: ReserveInput = req.body;
 
+    if(reserveData.doc_rid == reserveData.u_rid){
+        res.status(400).json({ msg: "CANT RESERVE YOURSELF" });
+    }
+
   let sql = "INSERT INTO reserve (u_rid, doc_rid, d_rid, date) VALUES (?,?,?,?) ";
   sql = mysql.format(sql, [
     reserveData.u_rid,
