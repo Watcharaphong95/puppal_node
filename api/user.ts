@@ -7,7 +7,7 @@ import { LoginData } from "../models/login_data";
 export const router = express.Router();
 
 router.get('/', (req, res)=>{
-    let sql = "SELECT * FROM user WHERE type = 1"
+    let sql = "SELECT * FROM user WHERE cid IS NULL"
 
     conn.query(sql, (err, result) => {
         if(err){
@@ -21,7 +21,7 @@ router.get('/', (req, res)=>{
 router.post('/register', (req, res) => {
     let userData: UserRegister = req.body;
 
-    let sql = "INSERT INTO user (username, nameSurname, phone, email, password, profilePic, type) VALUES (?,?,?,?,?,?,?)"
+    let sql = "INSERT INTO user (username, nameSurname, phone, email, password, profilePic) VALUES (?,?,?,?,?,?)"
     sql = mysql.format(sql, [
         userData.username,
         userData.nameSurname,
@@ -29,7 +29,6 @@ router.post('/register', (req, res) => {
         userData.email,
         userData.password,
         userData.profilePic,
-        userData.type
     ])
 
     conn.query(sql, (err, result) => {

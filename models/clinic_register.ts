@@ -5,15 +5,17 @@
 //   const clinicRegister = Convert.toClinicRegister(json);
 
 export interface ClinicRegister {
-    username:    string;
-    nameSurname: string;
-    phone:       string;
-    email:       string;
-    password:    string;
-    profilePic:  string;
-    lat:         string;
-    lng:         string;
-    type:        number;
+    uid:              number;
+    clinicname:       string;
+    nameSurname:      string;
+    phone:            string;
+    email:            string;
+    password:         string;
+    profileClinicPic: string;
+    lat:              string;
+    lng:              string;
+    doctorPic:        null;
+    followersClinic:  number;
 }
 
 // Converts JSON strings to/from your types

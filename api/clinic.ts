@@ -7,7 +7,7 @@ import { ClinicRegister } from "../models/clinic_register";
 export const router = express.Router();
 
 router.get('/', (req, res)=>{
-    let sql = "SELECT * FROM user WHERE type = 2"
+    let sql = "SELECT * FROM user WHERE cid IS NOT NULL"
 
     conn.query(sql, (err, result) => {
         if(err){
@@ -21,17 +21,27 @@ router.get('/', (req, res)=>{
 router.post('/register', (req, res) => {
     let clinicData: ClinicRegister = req.body;
 
-    let sql = "INSERT INTO user (username, nameSurname, phone, email, password, profilePic, lat, lng, type) VALUES (?,?,?,?,?,?,?,?,?)"
+    let sqlCheck = "SELECT * FROM user WHERE email = ?"
+    sqlCheck = mysql.format(sqlCheck, [
+        clinicData.email
+    ])
+
+    conn.query(sqlCheck, (err, result) => {
+        if(result){
+            
+        }
+    })
+
+    let sql = "INSERT INTO user (clinicname, nameSurname, phone, email, password, profileClinicPic, lat, lng) VALUES (?,?,?,?,?,?,?,?)"
     sql = mysql.format(sql, [
-        clinicData.username,
+        clinicData.clinicname,
         clinicData.nameSurname,
         clinicData.phone,
         clinicData.email,
         clinicData.password,
-        clinicData.profilePic,
+        clinicData.profileClinicPic,
         clinicData.lat,
         clinicData.lng,
-        clinicData.type
     ])
 
     conn.query(sql, (err, result) => {
@@ -46,7 +56,7 @@ router.post('/register', (req, res) => {
 router.get('/search/:word', (req, res) => {
     let word = req.params.word; 
 
-    let sql = "SELECT * FROM user WHERE type = 2 AND username LIKE CONCAT(?,'%')"
+    let sql = "SELECT * FROM user WHERE cid IS NOT NULL AND username LIKE CONCAT(?,'%')"
     sql = mysql.format(sql, [
         word
     ])

@@ -11,7 +11,6 @@ export interface UserRegister {
     email:       string;
     password:    string;
     profilePic:  string;
-    type:        number;
 }
 
 // Converts JSON strings to/from your types
