@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 router.post("/add", (req, res) => {
   let reserveData: ReserveInput = req.body;
 
-  let sql = "INSERT INTO reserve (u_rid, doc_rid, d_rid, date) VALUES (?,?,?) ";
+  let sql = "INSERT INTO reserve (u_rid, doc_rid, d_rid, date) VALUES (?,?,?,?) ";
   sql = mysql.format(sql, [
     reserveData.u_rid,
     reserveData.doc_rid,
