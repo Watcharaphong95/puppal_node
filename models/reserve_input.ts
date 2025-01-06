@@ -6,6 +6,7 @@
 
 export interface ReserveInput {
     u_rid: number;
+    doc_rid: number;
     d_rid: number;
     date:  string;
 }
