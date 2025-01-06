@@ -25,13 +25,13 @@ router.post('/register', (req, res) => {
         INSERT INTO user (clinicname, nameSurname, phone, email, password, profileClinicPic, lat, lng) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE
-            clinicname = VALUES(clinicname),
-            nameSurname = VALUES(nameSurname),
-            phone = VALUES(phone),
-            password = VALUES(password),
-            profileClinicPic = VALUES(profileClinicPic),
-            lat = VALUES(lat),
-            lng = VALUES(lng)
+        clinicname = CASE WHEN clinicname IS NULL THEN VALUES(clinicname) ELSE clinicname END,
+        nameSurname = CASE WHEN nameSurname IS NULL THEN VALUES(nameSurname) ELSE nameSurname END,
+        phone = CASE WHEN phone IS NULL THEN VALUES(phone) ELSE phone END,
+        password = CASE WHEN password IS NULL THEN VALUES(password) ELSE password END,
+        profileClinicPic = CASE WHEN profileClinicPic IS NULL THEN VALUES(profileClinicPic) ELSE profileClinicPic END,
+        lat = CASE WHEN lat IS NULL THEN VALUES(lat) ELSE lat END,
+        lng = CASE WHEN lng IS NULL THEN VALUES(lng) ELSE lng END;
     `
     sql = mysql.format(sql, [
         clinicData.clinicname,
