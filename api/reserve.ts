@@ -48,9 +48,9 @@ router.post("/add", (req, res) => {
 router.get("/:did", (req, res) => {
   let did = req.params.did;
 
-  let sql = "SELECT reserve.d_rid, dog.pic AS dogPic, dog.name AS dogname, user.username AS ownername, user.profilePic AS owmerPic, reserve.date, reserve.status FROM reserve, user, dog WHERE reserve.u_rid = user.uid AND reserve.d_rid = dog.did AND doc_rid = ?";
+  let sql = "SELECT reserve.d_rid, dog.pic AS dogPic, dog.name AS dogname, user.username AS ownername, user.profilePic AS owmerPic, reserve.date, reserve.status FROM reserve, user, dog WHERE reserve.u_rid = user.uid AND reserve.d_rid = dog.did AND doc_rid = ? AND reserve.status = ?";
 
-  sql = mysql.format(sql, [did]);
+  sql = mysql.format(sql, [did, 0]);
 
   conn.query(sql, (err, result) => {
     if (err) {
