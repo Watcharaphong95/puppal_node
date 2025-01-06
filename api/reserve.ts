@@ -17,21 +17,20 @@ router.get("/", (req, res) => {
   });
 });
 
-
-
 router.post("/add", (req, res) => {
   let reserveData: ReserveInput = req.body;
 
-    if(reserveData.doc_rid == reserveData.u_rid){
-        res.status(400).json({ msg: "CANT RESERVE YOURSELF" });
-    }
+  if (reserveData.doc_rid == reserveData.u_rid) {
+    res.status(400).json({ msg: "CANT RESERVE YOURSELF" });
+  }
 
-  let sql = "INSERT INTO reserve (u_rid, doc_rid, d_rid, date) VALUES (?,?,?,?) ";
+  let sql =
+    "INSERT INTO reserve (u_rid, doc_rid, d_rid, date) VALUES (?,?,?,?) ";
   sql = mysql.format(sql, [
     reserveData.u_rid,
     reserveData.doc_rid,
     reserveData.d_rid,
-    reserveData.date
+    reserveData.date,
   ]);
 
   conn.query(sql, (err, result) => {
@@ -42,6 +41,22 @@ router.post("/add", (req, res) => {
         affected_rows: result.affectedRows,
         last_idx: result.insertId,
       });
+    }
+  });
+});
+
+router.get("/:did", (req, res) => {
+  let did = req.params.did;
+
+  let sql = "SELECT reserve.d_rid, dog.pic AS dogPic, dog.name AS dogname, user.username AS ownername, user.profilePic AS owmerPic, reserve.date FROM reserve, user, dog WHERE reserve.u_rid = user.uid AND reserve.d_rid = dog.did AND doc_rid = ?";
+
+  sql = mysql.format(sql, [did]);
+
+  conn.query(sql, (err, result) => {
+    if (err) {
+      res.status(400).json({ msg: err.message });
+    } else {
+      res.status(200).json(result);
     }
   });
 });
