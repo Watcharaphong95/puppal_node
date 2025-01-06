@@ -6,8 +6,11 @@ import { LoginData } from "../models/login_data";
 
 export const router = express.Router();
 
-router.get('/', (req, res)=>{
-    let sql = "SELECT * FROM user WHERE cid IS NULL"
+router.get('/:email', (req, res)=>{
+    let email = req.params.email;
+    let sql = "SELECT * FROM user WHERE email = ?"
+
+    sql = mysql.format(sql, [email])
 
     conn.query(sql, (err, result) => {
         if(err){
