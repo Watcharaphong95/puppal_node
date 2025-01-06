@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/:uid", (req, res) => {
     let uid = req.params.uid;
 
-    let sql = "SELECT * FROM dog WHERE u_did = ?";
+    let sql = "SELECT dog.*, dog.name AS dogName, breed.name AS breed FROM dog, breed WHERE dog.b_did = breed.bid AND u_did = ?";
 
     sql = mysql.format(sql, [
         uid
