@@ -60,3 +60,35 @@ router.get("/:did", (req, res) => {
     }
   });
 });
+
+router.put("/accept/:rid", (req, res) => {
+    let rid = req.params.rid;
+  
+    let sql = "UPDATE reserve SET status = 1 WHERE rid = ?";
+  
+    sql = mysql.format(sql, [rid]);
+  
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ msg: err.message });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  });
+
+  router.put("/cancle/:rid", (req, res) => {
+    let rid = req.params.rid;
+  
+    let sql = "UPDATE reserve SET status = 2 WHERE rid = ?";
+  
+    sql = mysql.format(sql, [rid]);
+  
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ msg: err.message });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  });
