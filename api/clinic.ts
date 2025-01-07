@@ -68,12 +68,14 @@ router.post('/register', (req, res) => {
         })
 })
 
-router.get('/search/:word', (req, res) => {
+router.get('/search/:word/:uid', (req, res) => {
     let word = req.params.word; 
+    let uid = req.params.uid;
 
-    let sql = "SELECT * FROM user WHERE clinicname LIKE CONCAT(?,'%')"
+    let sql = "SELECT * FROM user WHERE clinicname LIKE CONCAT(?,'%') AND uid != ?"
     sql = mysql.format(sql, [
-        word
+        word,
+        uid
     ])
 
     conn.query(sql, (err, result) => {
