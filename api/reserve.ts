@@ -61,6 +61,22 @@ router.get("/:did", (req, res) => {
   });
 });
 
+router.get("/user/:did", (req, res) => {
+    let did = req.params.did;
+  
+    let sql = "SELECT user.clinicname, user.profileClinicPic, dog.name, dog.Pic AS dogPic, reserve.date, reserve.status, user.lat, user.lng FROM reserve, user, dog WHERE reserve.doc_rid = user.uid AND reserve.d_rid = dog.did AND u_rid = ? AND reserve.status = ? ORDER BY reserve.date ASC";
+  
+    sql = mysql.format(sql, [did, 0]);
+  
+    conn.query(sql, (err, result) => {
+      if (err) {
+        res.status(400).json({ msg: err.message });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  });
+
 router.put("/accept/:rid", (req, res) => {
     let rid = req.params.rid;
   
