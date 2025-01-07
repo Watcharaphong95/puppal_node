@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 router.get("/doctor/:did", (req, res) => {
   let did = req.params.did;
 
-  let sql = "SELECT date FROM reserve WHERE doc_rid = ? AND status = ?";
+  let sql = "SELECT date FROM reserve WHERE doc_rid = ? AND status <= ?";
 
   sql = mysql.format(sql, [
     did,
