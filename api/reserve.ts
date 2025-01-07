@@ -64,7 +64,7 @@ router.get("/:did", (req, res) => {
 router.get("/user/:did", (req, res) => {
     let did = req.params.did;
   
-    let sql = "SELECT user.clinicname, user.profileClinicPic, dog.name, dog.Pic AS dogPic, reserve.date, reserve.status, user.lat, user.lng, reserve.d_rid FROM reserve, user, dog WHERE reserve.doc_rid = user.uid AND reserve.d_rid = dog.did AND u_rid = ? AND reserve.status = ? ORDER BY reserve.date ASC";
+    let sql = "SELECT reserve.rid ,user.clinicname, user.profileClinicPic, dog.name, dog.Pic AS dogPic, reserve.date, reserve.status, user.lat, user.lng, reserve.d_rid FROM reserve, user, dog WHERE reserve.doc_rid = user.uid AND reserve.d_rid = dog.did AND u_rid = ? AND reserve.status = ? ORDER BY reserve.date ASC";
   
     sql = mysql.format(sql, [did, 0]);
   
