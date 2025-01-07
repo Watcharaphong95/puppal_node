@@ -17,6 +17,25 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/doctor/:did", (req, res) => {
+  let did = req.params.did;
+
+  let sql = "SELECT date FROM reserve WHERE doc_rid = ? AND status = ?";
+
+  sql = mysql.format(sql, [
+    did,
+    1
+  ])
+
+  conn.query(sql, (err, result) => {
+    if (err) {
+      res.status(400).json({ msg: err.message });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+});
+
 router.post("/add", (req, res) => {
   let reserveData: ReserveInput = req.body;
 
